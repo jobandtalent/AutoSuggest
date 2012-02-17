@@ -20,6 +20,11 @@
  */
 
 (function($){
+	// Taken from MooTools!
+	var escapeRegExp = function(str) {
+		return str.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1');
+	};
+
 	$.fn.autoSuggest = function(data, options) {
 		var defaults = { 
 			asHtmlID: false,
@@ -331,7 +336,12 @@
 							$(this).addClass("selected");
 						}).mousedown(function(){ input_focus = false; });
 					var close = $('<a class="as-close">&times;</a>').click(function(){
-							values_input.val(values_input.val().replace(","+data[opts.selectedValuesProp]+",",","));
+							var selectedValue = '' + data[opts.selectedValuesProp];
+							var oldValue = values_input.val()
+								.replace(","+selectedValue+",",",")
+								.replace(new RegExp("^"+escapeRegExp(selectedValue)+","),",")
+								.replace(new RegExp(","+escapeRegExp(selectedValue)+"$"),",");
+							values_input.val(oldValue);
 							opts.selectionRemoved.call(this, item);
 							input_focus = true;
 							input.focus();
