@@ -81,12 +81,12 @@
 				var input_focus = false;
 				
 				// Setup basic elements and render them to the DOM
-				input.wrap('<ul class="as-selections" id="as-selections-'+x+'"></ul>').wrap('<li class="as-original" id="as-original-'+x+'"></li>');
-				var selections_holder = $("#as-selections-"+x);
-				var org_li = $("#as-original-"+x);				
-				var results_holder = $('<div class="as-results" id="as-results-'+x+'"></div>').hide();
+				input.wrap('<ul class="as-selections as-selections-'+x+'"></ul>').wrap('<li class="as-original as-original-'+x+'"></li>');
+			        var selections_holder = input.parents('.as-selections');
+			        var org_li = input.parents('.as-original');
+			        var results_holder = $('<div class="as-results"></div>').hide();
 				var results_ul =  $('<ul class="as-list"></ul>');
-				var values_input = $('<input type="hidden" class="as-values" name="as_values_'+x+'" id="as-values-'+x+'" />');
+				var values_input = $('<input type="hidden" class="as-values" />');
 				var prefill_value = "";
 				if(typeof opts.preFill == "string"){
 					var vals = opts.preFill.split(",");					
@@ -282,10 +282,10 @@
 							}	
 						}
 						if(forward){
-							var formatted = $('<li class="as-result-item" id="as-result-item-'+num+'"></li>').click(function(){
+							var formatted = $('<li class="as-result-item as-result-item-'+num+'"></li>').click(function(){
 									var raw_data = $(this).data("data");
 									var number = raw_data.num;
-									if($("#as-selection-"+number, selections_holder).length <= 0 && !tab_press){
+									if($(".as-selection-"+number, selections_holder).length <= 0 && !tab_press){
 										var data = raw_data.attributes;
 										input.val("").focus();
 										prev = "";
@@ -330,7 +330,7 @@
 				
 				function add_selected_item(data, num){
 					values_input.val(values_input.val()+data[opts.selectedValuesProp]+",");
-					var item = $('<li class="as-selection-item" id="as-selection-'+num+'"></li>').click(function(){
+					var item = $('<li class="as-selection-item as-selection-item-'+num+'"></li>').click(function(){
 							opts.selectionClick.call(this, $(this));
 							selections_holder.children().removeClass("selected");
 							$(this).addClass("selected");
